@@ -88,9 +88,7 @@ export default function Register() {
         loop
         muted
         playsInline
-        preload="none"
-        loading="lazy"
-        poster="/bgdashboard.jpg"
+        preload="auto"
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
       >
         <source src="/bg.mp4" type="video/mp4" />
