@@ -1,58 +1,62 @@
-# Brookfield Properties API
+# Brookfield Properties Platform
 
-Backend API for the Brookfield Properties Platform built with Node.js, Express, TypeScript, and Supabase.
-
-## Setup
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Configure environment:
-```bash
-cp .env.example .env
-# Edit .env with your Supabase credentials
-```
-
-3. Run development server:
-```bash
-npm run dev
-```
-
-4. Build for production:
-```bash
-npm run build
-npm start
-```
-
-## API Endpoints
-
-- `GET /health` - Health check
-- `POST /api/v1/auth/register` - User registration
-- `POST /api/v1/auth/login` - User login
-- `GET /api/v1/users/profile` - Get user profile (auth required)
-- `GET /api/v1/users/wallet` - Get wallet info (auth required)
-- `GET /api/v1/admin/users` - List users (admin only)
-
-## Architecture
-
-- **MVC Pattern**: Models, Views (JSON), Controllers
-- **Middleware**: CORS, Helmet, Auth, Error Handling
-- **Database**: Supabase (PostgreSQL)
-- **TypeScript**: Full type safety
-- **ESM**: Modern ES modules
+A full-stack property review task platform with referral-only access and internal virtual currency (VIEWS).
 
 ## Project Structure
 
 ```
-src/
-├── config/          # Configuration files
-├── controllers/     # Request handlers
-├── middleware/      # Express middleware
-├── models/          # Type definitions
-├── routes/          # API routes
-├── services/        # Business logic
-├── utils/           # Utilities
-└── types/           # TypeScript types
+Georgia properties/
+├── frontend/          # React + Vite client application
+├── backend/           # Node.js + Express + TypeScript API
+└── .amazonq/         # Project rules and documentation
 ```
+
+## Quick Start
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Configure your environment variables
+npm run dev
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+# Configure your API endpoint
+npm run dev
+```
+
+## Documentation
+
+- Backend API documentation: [backend/README.md](backend/README.md)
+- System specifications: [.amazonq/rules/PRD.md](.amazonq/rules/PRD.md)
+
+## Technology Stack
+
+**Frontend:**
+- React 18
+- Vite
+- TailwindCSS
+- React Router
+
+**Backend:**
+- Node.js
+- Express
+- TypeScript
+- Supabase (PostgreSQL)
+
+## Key Features
+
+- Referral-only registration system
+- Task-based earning mechanism
+- Multi-tier membership levels
+- Internal wallet system with VIEWS currency
+- Administrative back-office dashboard
+- Real-time balance tracking
