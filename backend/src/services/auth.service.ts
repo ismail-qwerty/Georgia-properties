@@ -159,7 +159,8 @@ export class AuthService {
   }
 
   static async login(username: string, password: string) {
-    console.log('Login attempt for username:', username);
+    console.log('[LOGIN] Attempt for username:', username);
+    console.log('[LOGIN] Password length:', password?.length);
     
     // Find user by username
     const { data: user, error } = await supabaseAdmin
@@ -168,28 +169,46 @@ export class AuthService {
       .eq('username', username)
       .single();
 
-    console.log('User lookup result:', { found: !!user, error: error?.message });
+    console.log('[LOGIN] User lookup result:', { 
+      found: !!user, 
+      error: error?.message,
+      errorDetails: error 
+    });
 
-    if (error || !user) {
-      console.error('User not found or error:', error);
+    if (error) {
+      console.error('[LOGIN] Database error:', error);
       throw new AppError(401, 'Invalid username or password');
     }
 
-    console.log('User found:', { id: user.id, username: user.username, status: user.user_status });
+    if (!user) {
+      console.error('[LOGIN] User not found for username:', username);
+      throw new AppError(401, 'Invalid username or password');
+    }
+
+    console.log('[LOGIN] User found:', { 
+      id: user.id, 
+      username: user.username, 
+      status: user.user_status,
+      hasPasswordHash: !!user.password_hash,
+      passwordHashLength: user.password_hash?.length 
+    });
 
     // Check if account is active
     if (user.user_status !== 'Active') {
-      console.log('Account is not active:', user.user_status);
+      console.log('[LOGIN] Account is not active:', user.user_status);
       throw new AppError(403, 'Your account has been deactivated. Please contact support.');
     }
 
     // Verify password
-    console.log('Verifying password...');
+    console.log('[LOGIN] Verifying password...');
+    console.log('[LOGIN] Input password:', password.substring(0, 3) + '***');
+    console.log('[LOGIN] Stored hash prefix:', user.password_hash?.substring(0, 10) + '...');
+    
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-    console.log('Password valid:', isPasswordValid);
+    console.log('[LOGIN] Password comparison result:', isPasswordValid);
 
     if (!isPasswordValid) {
-      console.error('Invalid password for user:', username);
+      console.error('[LOGIN] Invalid password for user:', username);
       throw new AppError(401, 'Invalid username or password');
     }
 
@@ -216,7 +235,7 @@ export class AuthService {
       .eq('id', user.tier_id)
       .single();
 
-    console.log('Login successful for user:', username);
+    console.log('[LOGIN] Login successful for user:', username);
 
     return {
       user: {
