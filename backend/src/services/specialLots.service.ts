@@ -3,7 +3,7 @@ import { AppError } from '../middleware/errorHandler.js';
 
 export class SpecialLotsService {
   // Get all special lots
-  static async getAllSpecialLots(filters = {}) {
+  static async getAllSpecialLots(filters: { status?: string; limit?: number } = {}) {
     const { status = 'Active', limit = 1000 } = filters;
 
     let query = supabaseAdmin

@@ -180,9 +180,11 @@ export class AuthService {
   }
 
   private static generateToken(userId: string): string {
-    return jwt.sign({ userId }, ENV.JWT.SECRET, {
-      expiresIn: ENV.JWT.EXPIRES_IN,
-    });
+    return jwt.sign(
+      { userId },
+      ENV.JWT.SECRET,
+      { expiresIn: ENV.JWT.EXPIRES_IN } as jwt.SignOptions
+    );
   }
 
   private static generateReferenceCode(): string {

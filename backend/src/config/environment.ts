@@ -7,6 +7,8 @@ export const ENV = {
   PORT: parseInt(process.env.PORT || '3000', 10),
   API_VERSION: process.env.API_VERSION || 'v1',
   
+  DATABASE_URL: process.env.DATABASE_URL,
+  
   SUPABASE: {
     URL: process.env.SUPABASE_URL!,
     ANON_KEY: process.env.SUPABASE_ANON_KEY!,

@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -11,6 +13,8 @@ export interface User {
   full_name: string;
   email: string;
   phone: string;
+  password_hash: string;
+  wallet_password_hash: string;
   reference_code: string;
   referrer_id: string | null;
   tier_id: number;
