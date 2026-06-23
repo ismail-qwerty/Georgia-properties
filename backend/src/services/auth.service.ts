@@ -24,29 +24,44 @@ export class AuthService {
       reference_code,
     } = userData;
 
+    console.log('[REGISTER] Registration attempt:', { username, email, phone, reference_code });
+
     // Validate reference code if provided
     let referrer_id = null;
     if (reference_code && reference_code.trim() !== '') {
+      console.log('[REGISTER] Validating reference code:', reference_code);
+      
       const { data: referrer, error: referrerError } = await supabaseAdmin
         .from('users')
         .select('id, username, user_status')
         .eq('reference_code', reference_code)
         .maybeSingle();
 
+      console.log('[REGISTER] Referrer lookup result:', { 
+        found: !!referrer, 
+        error: referrerError?.message,
+        referrer: referrer ? { id: referrer.id, username: referrer.username, status: referrer.user_status } : null
+      });
+
       if (referrerError) {
-        console.error('Referrer lookup error:', referrerError);
+        console.error('[REGISTER] Referrer lookup error:', referrerError);
         throw new AppError(400, 'Error validating reference code. Please try again.');
       }
 
       if (!referrer) {
+        console.error('[REGISTER] Invalid reference code provided:', reference_code);
         throw new AppError(400, 'Invalid reference code. Please check your invitation link.');
       }
 
       if (referrer.user_status !== 'Active') {
+        console.error('[REGISTER] Referrer account is inactive:', referrer.user_status);
         throw new AppError(400, 'Reference code belongs to an inactive account.');
       }
 
       referrer_id = referrer.id;
+      console.log('[REGISTER] Valid referrer found, ID:', referrer_id);
+    } else {
+      console.log('[REGISTER] No reference code provided, allowing registration without referrer');
     }
 
     // Check if username already exists
